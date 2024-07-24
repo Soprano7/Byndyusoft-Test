@@ -1,0 +1,63 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #FFA1A1;
+  font-family: 'Arial', sans-serif;
+}
+
+h1 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.Container {
+  width: 554px;
+  height: 800px;
+  top: 141px;
+  left: 444px;
+  gap: 0px;
+  overflow: hidden;
+  border-radius: 18px;
+}
+
+.Display {
+  background-color: #007acc;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1.5em;
+  overflow: hidden;
+}
+
+.History {
+  padding: 10px;
+  max-height: 150px;
+  overflow-y: hidden;
+  margin-bottom: 10px;
+}
+
+.HistoryItem {
+  margin-bottom: 5px;
+  font-size: 0.9em;
+}
+
+.CurrentExpression {
+  display: flex;
+  font-family: Geometria;
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 80px;
+  text-align: right;
+  padding-right: 48px;
+  padding-bottom: 18px;
+  justify-content: flex-end;
+  align-items: center;
+
+  overflow: hidden;
+  word-wrap: break-word;
+}

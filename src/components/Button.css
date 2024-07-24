@@ -1,0 +1,40 @@
+.Button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: inherit;
+    color: #F2F2F2;
+    cursor: pointer;
+    font-family: Geometria,sans-serif;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 88px;
+    text-align: center;
+
+}
+
+.Button:hover {
+    background-color: #FFFFFF;
+    border-radius: 50px;
+    opacity: 12%;
+}
+
+.Button:active {
+    background-color: #ccc;
+    transform: scale(0.95);
+}
+
+.Button.special {
+    background-color:  #FFFFFF !important;
+    color: #2B589A;
+    border-radius: 50px;
+}
+
+.Button.special:hover {
+    background-color: #ff8700;
+}

@@ -1,0 +1,49 @@
+.ButtonPanel {
+    display: flex;
+    flex-direction: column;
+    background-color: #005e9a;
+    /*border-top: 1px solid #FFFFFF;*/
+    height: 77%;
+}
+
+.ButtonRow {
+    display: flex;
+    justify-content: space-around;
+    flex: 1;
+}
+
+.Button {
+    flex: 1 1 calc(20% - 20px);
+    max-width: 80px;
+    margin: 10px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.Button.special {
+    flex: 1 1 calc(40% - 20px);
+}
+
+.Button.ButtonSpecial {
+    flex: 1 1 calc(100% - 20px);
+}
+
+.Button {
+    background-color: inherit;
+    color: #F2F2F2;
+    border: none;
+    outline: none;
+}
+
+.Button:hover {
+    background-color: #ddd;
+}
+
+.Button:active {
+    background-color: #bbb;
+}
