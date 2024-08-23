@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 import Display from './components/Display';
 import ButtonPanel from './components/ButtonPanel';
-import { evaluateExpression } from './utils/evaluateExpression';
+// import { evaluateExpression } from './utils/evaluateExpression';
+import { evaluateExpression } from './utils/evaluateExpressionV2';
 
 const App: React.FC = () => {
     const [expression, setExpression] = useState('');
