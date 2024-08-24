@@ -1,5 +1,5 @@
 import { Token } from './Token';
-import { tokenize } from './tokenize';
+import { Tokenizer } from "./tokenize.ts";
 
 interface Token {
   type: string;
@@ -20,12 +20,14 @@ class ASTNode {
 
 class Parser {
   private outStack: ASTNode[];
+  private Tokenizer: any;
   private opStack: Token[];
   private assoc: { [key: string]: string };
   private prec: { [key: string]: number };
 
   constructor() {
     this.outStack = [];
+    this.Tokenizer = new Tokenizer();
     this.opStack = [];
     this.assoc = {
       '^': 'right',
@@ -62,7 +64,7 @@ class Parser {
   }
 
   public parse(inp: string): ASTNode | null {
-    const tokens = tokenize(inp);
+    const tokens = this.Tokenizer.tokenize(inp);
 
     tokens.forEach((v) => {
       if (v.type === 'Literal' || v.type === 'Variable') {
@@ -77,9 +79,9 @@ class Parser {
         while (
             this.peek(this.opStack) &&
             this.peek(this.opStack)!.type === 'Operator' &&
-        ((this.associativity(v) === 'left' && this.precedence(v) <= this.precedence(this.peek(this.opStack)!)) ||
-        (this.associativity(v) === 'right' && this.precedence(v) < this.precedence(this.peek(this.opStack)!)))
-      ) {
+            ((this.associativity(v) === 'left' && this.precedence(v) <= this.precedence(this.peek(this.opStack)!)) ||
+                (this.associativity(v) === 'right' && this.precedence(v) < this.precedence(this.peek(this.opStack)!)))
+            ) {
           this.addNode(this.opStack.pop()!);
         }
         this.opStack.push(v);

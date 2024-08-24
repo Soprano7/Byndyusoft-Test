@@ -1,6 +1,6 @@
 import { Token } from './Token';
 
-class Tokenizer {
+export class Tokenizer {
   private static isComma(ch: string): boolean {
     return /,/.test(ch);
   }
@@ -25,7 +25,7 @@ class Tokenizer {
     return /\)/.test(ch);
   }
 
-  public static tokenize(str: string): Token[] {
+  public tokenize(str: string): Token[] {
     str = str.replace(/\s+/g, '');
     const chars = str.split('');
 
@@ -78,7 +78,7 @@ class Tokenizer {
     return result;
   }
 
-  private static emptyLetterBufferAsVariables(result: Token[], letterBuffer: string[]): void {
+  private emptyLetterBufferAsVariables(result: Token[], letterBuffer: string[]): void {
     const l = letterBuffer.length;
     for (let i = 0; i < l; i++) {
       result.push(new Token('Variable', letterBuffer[i]));
@@ -90,12 +90,10 @@ class Tokenizer {
     letterBuffer.length = 0;
   }
 
-  private static emptyNumberBufferAsLiteral(result: Token[], numberBuffer: string[]): void {
+  private emptyNumberBufferAsLiteral(result: Token[], numberBuffer: string[]): void {
     if (numberBuffer.length) {
       result.push(new Token('Literal', numberBuffer.join('')));
       numberBuffer.length = 0;
     }
   }
 }
-
-export { Tokenizer };
