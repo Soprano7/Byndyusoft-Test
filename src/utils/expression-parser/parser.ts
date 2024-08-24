@@ -20,7 +20,7 @@ class ASTNode {
 
 class Parser {
   private outStack: ASTNode[];
-  private Tokenizer: any;
+  private Tokenizer: Tokenizer;
   private opStack: Token[];
   private assoc: { [key: string]: string };
   private prec: { [key: string]: number };
@@ -35,6 +35,8 @@ class Parser {
       '/': 'left',
       '+': 'left',
       '-': 'left',
+      '%': 'left',
+      '√': 'right',
     };
     this.prec = {
       '^': 4,
@@ -42,6 +44,8 @@ class Parser {
       '/': 3,
       '+': 2,
       '-': 2,
+      '%': 2,
+      '√': 5,
     };
   }
 

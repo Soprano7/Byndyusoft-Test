@@ -23,6 +23,12 @@ export const evaluateExpression = (expression) => {
             if (token.value === '/') {
                 result = literals[0] / literals[1];
             }
+            if (token.value === '%') {
+                result = literals[0] * (literals[1] / 100);
+            }
+            if (token.value === '√') {
+                result = Math.sqrt(literals[0]);
+            }
             literals = [result];
         } else {
             literals.push(parseFloat(token.value));

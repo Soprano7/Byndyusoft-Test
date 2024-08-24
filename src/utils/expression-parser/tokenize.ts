@@ -14,7 +14,7 @@ export class Tokenizer {
   }
 
   private static isOperator(ch: string): boolean {
-    return /\+|-|\*|\/|\^/.test(ch);
+    return /\+|-|\*|\/|\^|%|√/.test(ch);
   }
 
   private static isLeftParenthesis(ch: string): boolean {
