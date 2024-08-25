@@ -1,10 +1,6 @@
 import { Token } from './Token';
 import { Tokenizer } from "./tokenize.ts";
 
-interface Token {
-  type: string;
-  value: string;
-}
 
 class ASTNode {
   token: Token;

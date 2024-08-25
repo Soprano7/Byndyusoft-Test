@@ -13,20 +13,21 @@ export const evaluateExpression = (expression) => {
         if (token.type === 'Operator') {
             if (token.value === '+') {
                 result = literals[0] + literals[1];
-            }
-            if (token.value === '-') {
+            } else if (token.value === '-') {
                 result = literals[0] - literals[1];
-            }
-            if (token.value === '*') {
+            } else if (token.value === '*') {
                 result = literals[0] * literals[1];
-            }
-            if (token.value === '/') {
+            } else if (token.value === '/') {
+                if (literals[1] === 0) {
+                    throw new Error("Division by zero");
+                }
                 result = literals[0] / literals[1];
-            }
-            if (token.value === '%') {
+            } else if (token.value === '%') {
                 result = literals[0] * (literals[1] / 100);
-            }
-            if (token.value === '√') {
+            } else if (token.value === '√') {
+                if (literals[0] < 0) {
+                    throw new Error("Cannot take the square root of a negative number");
+                }
                 result = Math.sqrt(literals[0]);
             }
             literals = [result];

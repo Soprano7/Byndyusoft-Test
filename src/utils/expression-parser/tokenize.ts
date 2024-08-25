@@ -1,99 +1,102 @@
 import { Token } from './Token';
 
 export class Tokenizer {
-  private static isComma(ch: string): boolean {
-    return /,/.test(ch);
-  }
-
-  private static isDigit(ch: string): boolean {
-    return /\d/.test(ch);
-  }
-
-  private static isLetter(ch: string): boolean {
-    return /[a-z]/i.test(ch);
-  }
-
-  private static isOperator(ch: string): boolean {
-    return /\+|-|\*|\/|\^|%|√/.test(ch);
-  }
-
-  private static isLeftParenthesis(ch: string): boolean {
-    return /\(/.test(ch);
-  }
-
-  private static isRightParenthesis(ch: string): boolean {
-    return /\)/.test(ch);
-  }
+  private static readonly COMMA_REGEX = /,/;
+  private static readonly DIGIT_REGEX = /\d/;
+  private static readonly LETTER_REGEX = /[a-z]/i;
+  private static readonly OPERATOR_REGEX = /\+|-|\*|\/|\^|%|√/;
+  private static readonly LEFT_PARENTHESIS_REGEX = /\(/;
+  private static readonly RIGHT_PARENTHESIS_REGEX = /\)/;
 
   public tokenize(str: string): Token[] {
-    str = str.replace(/\s+/g, '');
-    const chars = str.split('');
-
+    const input = str.replace(/\s+/g, '');
+    const chars = input.split('');
     const result: Token[] = [];
-    const letterBuffer: string[] = [];
-    const numberBuffer: string[] = [];
+    const buffers = {
+      letter: [],
+      number: [],
+    };
 
-    chars.forEach((char) => {
+    for (const char of chars) {
       if (Tokenizer.isDigit(char)) {
-        numberBuffer.push(char);
+        buffers.number.push(char);
       } else if (char === '.') {
-        numberBuffer.push(char);
+        buffers.number.push(char);
       } else if (Tokenizer.isLetter(char)) {
-        if (numberBuffer.length) {
-          this.emptyNumberBufferAsLiteral(result, numberBuffer);
+        if (buffers.number.length) {
+          this.flushNumberBuffer(result, buffers.number);
           result.push(new Token('Operator', '*'));
         }
-        letterBuffer.push(char);
+        buffers.letter.push(char);
       } else if (Tokenizer.isOperator(char)) {
-        this.emptyNumberBufferAsLiteral(result, numberBuffer);
-        this.emptyLetterBufferAsVariables(result, letterBuffer);
+        this.flushBuffers(result, buffers);
         result.push(new Token('Operator', char));
       } else if (Tokenizer.isLeftParenthesis(char)) {
-        if (letterBuffer.length) {
-          result.push(new Token('Function', letterBuffer.join('')));
-          letterBuffer.length = 0;
-        } else if (numberBuffer.length) {
-          this.emptyNumberBufferAsLiteral(result, numberBuffer);
+        if (buffers.letter.length) {
+          result.push(new Token('Function', buffers.letter.join('')));
+          buffers.letter.length = 0;
+        } else if (buffers.number.length) {
+          this.flushNumberBuffer(result, buffers.number);
           result.push(new Token('Operator', '*'));
         }
         result.push(new Token('Left Parenthesis', char));
       } else if (Tokenizer.isRightParenthesis(char)) {
-        this.emptyLetterBufferAsVariables(result, letterBuffer);
-        this.emptyNumberBufferAsLiteral(result, numberBuffer);
+        this.flushBuffers(result, buffers);
         result.push(new Token('Right Parenthesis', char));
       } else if (Tokenizer.isComma(char)) {
-        this.emptyNumberBufferAsLiteral(result, numberBuffer);
-        this.emptyLetterBufferAsVariables(result, letterBuffer);
+        this.flushBuffers(result, buffers);
         result.push(new Token('Function Argument Separator', char));
       }
-    });
+    }
 
-    if (numberBuffer.length) {
-      this.emptyNumberBufferAsLiteral(result, numberBuffer);
-    }
-    if (letterBuffer.length) {
-      this.emptyLetterBufferAsVariables(result, letterBuffer);
-    }
+    this.flushBuffers(result, buffers);
 
     return result;
   }
 
-  private emptyLetterBufferAsVariables(result: Token[], letterBuffer: string[]): void {
-    const l = letterBuffer.length;
-    for (let i = 0; i < l; i++) {
-      result.push(new Token('Variable', letterBuffer[i]));
-      if (i < l - 1) {
-        // there are more Variables left
+  private flushBuffers(result: Token[], buffers: { letter: string[]; number: string[] }): void {
+    this.flushNumberBuffer(result, buffers.number);
+    this.flushLetterBuffer(result, buffers.letter);
+  }
+
+  private flushLetterBuffer(result: Token[], letterBuffer: string[]): void {
+    for (const letter of letterBuffer) {
+      result.push(new Token('Variable', letter));
+      if (letterBuffer.length > 1) {
         result.push(new Token('Operator', '*'));
       }
     }
     letterBuffer.length = 0;
   }
 
-  private emptyNumberBufferAsLiteral(result: Token[], numberBuffer: string[]): void {
+  private flushNumberBuffer(result: Token[], numberBuffer: string[]): void {
     if (numberBuffer.length) {
       result.push(new Token('Literal', numberBuffer.join('')));
       numberBuffer.length = 0;
     }
+  }
+
+  private static isComma(char: string): boolean {
+    return Tokenizer.COMMA_REGEX.test(char);
+  }
+
+  private static isDigit(char: string): boolean {
+    return Tokenizer.DIGIT_REGEX.test(char);
+  }
+
+  private static isLetter(char: string): boolean {
+    return Tokenizer.LETTER_REGEX.test(char);
+  }
+
+  private static isOperator(char: string): boolean {
+    return Tokenizer.OPERATOR_REGEX.test(char);
+  }
+
+  private static isLeftParenthesis(char: string): boolean {
+    return Tokenizer.LEFT_PARENTHESIS_REGEX.test(char);
+  }
+
+  private static isRightParenthesis(char: string): boolean {
+    return Tokenizer.RIGHT_PARENTHESIS_REGEX.test(char);
   }
 }
